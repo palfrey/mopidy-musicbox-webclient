@@ -226,13 +226,16 @@ function showAlbumPopup(popupId) {
 
 function initSocketevents() {
     mopidy.on("state:online", function() {
+        // want to consume tracks after playing
+        mopidy.tracklist.setConsume({'value': true}).then();
+        
         showOffline(false);
         getCurrentPlaylist();
         updateStatusOfAll();
-        getPlaylists();
+        //getPlaylists();
         getUriSchemes().then(function() {
             showFavourites();
-        });            
+        });
         getBrowseDir();
         getSearchSchemes();
         showLoading(false);
@@ -251,10 +254,10 @@ function initSocketevents() {
         setPlayState(true);
     });
 
-    mopidy.on("event:playlistsLoaded", function(data) {
+    /*mopidy.on("event:playlistsLoaded", function(data) {
         showLoading(true);
         getPlaylists();
-    });
+    });*/
 
     mopidy.on("event:volumeChanged", function(data) {
         setVolume(data["volume"]);
@@ -505,10 +508,10 @@ $(document).ready(function(event) {
     });
 
 // remove buttons only for MusicBox
+    //$('#navSettings').hide();
+    //$('#homesettings').hide();
     if (!isMusicBox) {
-        $('#navSettings').hide();
         $('#navshutdown').hide();
-        $('#homesettings').hide();
         $('#homeshutdown').hide();
     }
 
@@ -543,7 +546,7 @@ $(document).ready(function(event) {
 	    return true;
 	}
     });
-    
+
 
     if ($(window).width() < 980) {
         $("#panel").panel("close");

@@ -77,17 +77,9 @@
             <a href="#current" onclick="switchContent('current' ); return false;">
                 <span class="navtxt">Queue </span><i class="fa fa-bars"></i></a>
         </li>
-        <li id="navplaylists" data-icon="false">
-            <a href="#playlists" onclick="switchContent('playlists' ); return false;">
-                <span class="navtxt"> Playlists </span><i class="fa  fa-star"></i></a>
-        </li>
         <li id="navbrowse" data-icon="false">
             <a href="#browse" onclick="switchContent('browse' ); return false;">
                 <span class="navtxt"> Browse </span><i class="fa  fa-folder"></i></a>
-        </li>
-        <li id="navstream" data-icon="false">
-            <a href="#stream" onclick="switchContent('stream' ); return false;">
-                <span class="navtxt">Streams </span><i class="fa  fa-rss"></i></a>
         </li>
         <li id="navsearch" data-icon="false">
             <a href="#search" onclick="switchContent('search' ); return false;">
@@ -96,10 +88,6 @@
         <li id="navAlarmClock" data-icon="false">
                 <a href="/alarmclock/">
                 <span class="navtxt"> Alarm Clock </span><i class="fa fa-clock-o"></i></a>
-        </li>
-        <li id="navToggleFullscreen" data-icon="false">
-                <a href="#">
-                <span class="navtxt" id="toggletxt"> Fullscreen </span><i class="fa fa-desktop"></i></a>
         </li>
         <li id="navSettings" data-icon="false">
                 <a href="/settings/">
@@ -139,15 +127,6 @@
 <div data-role="popup" data-transition="none" data-theme="c" id="popupBrowse">
     <div data-role="collapsible-set">
         <ul data-role="listview" data-icon="false" id="popupBrowseLv">
-            <li>
-                <a href="#" onclick="return playBrowsedTracks(PLAY_ALL);">Play All</a>
-            </li>
-            <li>
-                <a href="#" onclick="return playBrowsedTracks(PLAY_NOW);">Play <span class="popupTrackName"></span></a>
-            </li>
-            <li class="addqueue">
-                <a href="#" onclick="return playBrowsedTracks(PLAY_NEXT);">Play Track Next</a>
-            </li>
             <li class="addqueue">
                 <a href="#" onclick="return playBrowsedTracks(ADD_THIS_BOTTOM);">Add Track to Bottom of Queue</a>
             </li>
@@ -161,12 +140,6 @@
 <div data-role="popup" data-transition="none" data-theme="c" id="popupTracks">
     <div data-role="collapsible-set">
         <ul data-role="listview" data-icon="false" id="popupTracksLv">
-            <li>
-                <a href="#" onclick="return playTrack(PLAY_NOW);">Play <span class="popupTrackName"></span></a>
-            </li>
-            <li class="addqueue">
-                <a href="#" onclick="return playTrack(PLAY_NEXT);">Play Track Next</a>
-            </li>
             <li class="addqueue">
                 <a href="#" onclick="return playTrack(ADD_THIS_BOTTOM);">Add Track to Bottom of Queue</a>
             </li>
@@ -238,22 +211,10 @@
                 <h4>Queue</h4>
             </div>
         </a>
-        <a href="#playlists" onclick="switchContent('playlists' ); return false;">
-            <div class="ui-block-a">
-                <i class="fa fa-star"></i>
-                <h4>Playlists</h4>
-            </div>
-        </a>
         <a href="#browse" onclick="switchContent('browse' ); return false;">
             <div class="ui-block-b">
                 <i class="fa fa-folder"></i>
                 <h4>Browse</h4>
-            </div>
-        </a>
-        <a href="#stream" onclick="switchContent('stream' ); return false;">
-            <div class="ui-block-a">
-                <i class="fa fa-rss"></i>
-                <h4>Streams</h4>
             </div>
         </a>
         <a href="#search" onclick="switchContent('search' ); return false;">
@@ -304,21 +265,6 @@
     </div>
 </div>
 <!-- /nowplaying -->
-
-<div data-role="content" id="playlistspane" class="pane">
-    <a style="float:right; padding: 1.2em 10px" onclick="return refreshPlaylists();"><i class="fa fa-refresh"></i></a>
-    <h4>Playlists</h4>
-    <div class="ui-grid-a pl-breakpoint">
-        <div class="ui-block-a scroll" id="playlistslistdiv">
-            <ul id="playlistslist" class="table"></ul>
-        </div>
-        <div class="ui-block-b scroll" id="playlisttracksdiv">
-        <div id="playlisttracksback" style="height: 30px; margin: 2px; padding-top: 2px; background-color: #aaa;"><a style="display:block; padding: 5px;" href="#" onclick="return togglePlaylists();"><i class="fa fa-arrow-circle-left"></i> Back</a></div>
-        <ul class="table" id="playlisttracks"></ul>
-        </div>
-    </div>
-</div>
-<!--/playlistspane-->
 
 <div data-role="content" id="browsepane" class="pane">
     <h4>Browse</h4>
@@ -400,37 +346,6 @@
 </div>
 <!-- search div -->
 
-<div data-role="content" class="pane" id="streampane">
-    <h4>Streams</h4>
-
-    <div class="ui-grid-a pl-breakpoint">
-        <div class="ui-block-a" style="padding: 5px">
-            <form>
-                <p>Play a specific stream/track and optionally save it to your favourites.
-                <button class="btn" type="button" onclick="return getCurrentlyPlaying();">
-                    Get currently playing
-                </button>
-                <input id="streamuriinput" placeholder="URI" class="span2" data-clear-btn="true"
-                       onkeypress="return streamPressed(event.keyCode);" id="appendedInputButton" type="text"/>
-                <button class="btn" type="button" onclick="return playStreamUri();">
-                    Play
-                </button>
-
-                <input id="streamnameinput" placeholder="Name" class="span2" data-clear-btn="true"
-                       onkeypress="return streamPressed(event.keyCode);" id="appendedInputButton" type="text"/>
-                <button class="btn" type="button" onclick="return addFavourite();">
-                    Save
-                </button>
-                    <br/>
-            </form>
-        </div>
-        <div class="ui-block-b" style="padding: 5px">
-            <ul id="streamuristable" class="table"></ul>
-        </div>
-    </div>
-</div>
-
-
 <div data-role="footer" data-tap-toggle="false" data-position="fixed" id="normalFooter">
     <div class="footerControls">
         <div class="songinfo" id="songinfo">
@@ -452,15 +367,7 @@
                 <a href="#" onclick="doPlay(); return false"><span id="btplayNowPlaying" title="Play"><i class="fa fa-play"></i></span></a>
                 <a href="#" onclick="doNext(); return false"><span id="btnext" title="Next"><i class="fa fa-fast-forward"></i></span></a>
             </div>
-            <div style="float: right; margin-right: 10px;">
-                <a href="#" onclick="doRandom(); return false"><span id="randombt" title="Random"><i class="fa fa-random"></i></span></a>
-                <a href="#" onclick="doRepeat(); return false"><span id="repeatbt" title="Repeat"><i class="fa fa-repeat"></i></span></a>
-                <a href="#" onclick="doConsume(); return false"><span id="consumebt" title="Consume"><i class="fa fa-cutlery"></i></span></a>
-                <a href="#" onclick="doSingle(); return false"><span id="singlebt" title="Single"><i class="fa fa-dot-circle-o"></i></span></a>
-                <a href="#" onclick="doShuffle(); return false"><span id="shufflebt" title="Shuffle"><i class="fa fa-arrows-v"></i></span></a>
-            </div>
         </div>
-
 </div>
 <!-- /footer -->
 

@@ -63,9 +63,9 @@ function playTrack(action) {
 
     // Search page default click behaviour adds and plays selected track only.
     if (action == PLAY_NOW && divid == 'search') {
-        action = PLAY_NOW_SEARCH;
+        action = ADD_THIS_BOTTOM;
     }
-    
+
     $('#popupTracks').popup('close');
     $('#controlspopup').popup('close');
     toast('Loading...');
@@ -109,6 +109,17 @@ function playTrack(action) {
             break;
     }
     return false;
+}
+
+function addTrackByUri(track_uri) {
+    toast('queueing...');
+    mopidy.tracklist.add({'uris': [track_uri]}).then(function(tlTracks) {
+        mopidy.playback.getState().done(function(state) {
+            if (state != 'playing') {
+                mopidy.playback.play().done();
+            }
+        });
+    });
 }
 
 /***

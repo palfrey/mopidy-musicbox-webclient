@@ -188,7 +188,7 @@ function renderSongLi(song, liID, uri) {
     songLi = '<li class="song albumli" id="' + liID + '">' +
              '<a href="#" class="moreBtn" onclick="return popupTracks(event, \'' + uri + '\',\'' + song.uri + '\');">' +
              '<i class="fa fa-ellipsis-v"></i></a>' +
-             '<a href="#" onclick="return playTrackByUri(\'' + song.uri + '\',\'' + uri + '\');">' +
+             '<a href="#" onclick="return addTrackByUri(\'' + song.uri + '\');">' +
              '<h1 class="trackname">' + name + '</h1></a>' +
              '</li>';
     return songLi;
@@ -289,7 +289,7 @@ function resultsToTables(results, target, uri) {
                         html += '<li class="song albumli" id="' + liID + '">' +
                                 '<a href="#" class="moreBtn" onclick="return popupTracks(event, \'' + uri + '\',\'' + newalbum[0].uri + '\');">' +
                                 '<i class="fa fa-ellipsis-v"></i></a>' +
-                                '<a href="#" onclick="return playTrackByUri(\'' + newalbum[0].uri + '\',\'' + uri + '\');">' +
+                                '<a href="#" onclick="return addTrackByUri(\'' + newalbum[0].uri + '\');">' +
                                 '<h1><i class="' + iconClass + '"></i> ' + newalbum[0].name + "</h1><p>";
                     }
 
