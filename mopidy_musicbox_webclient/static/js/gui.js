@@ -508,9 +508,9 @@ $(document).ready(function(event) {
     });
 
 // remove buttons only for MusicBox
-    //$('#navSettings').hide();
-    //$('#homesettings').hide();
     if (!isMusicBox) {
+        $('#navSettings').hide();
+        $('#homesettings').hide();
         $('#navshutdown').hide();
         $('#homeshutdown').hide();
     }
