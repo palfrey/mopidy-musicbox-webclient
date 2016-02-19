@@ -338,6 +338,7 @@ function getSearchSchemes() {
                     }
                 }
             }
+            $('#selectSearchService').val("local");
             $("#selectSearchService").selectmenu( "refresh", true );
         }, console.error
     );
