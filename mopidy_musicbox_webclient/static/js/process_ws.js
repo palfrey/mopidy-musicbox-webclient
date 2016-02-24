@@ -122,7 +122,7 @@ function processBrowseDir(resultArr) {
             child += '<li class="song albumli" id="browselisttracks-' + resultArr[i].uri + '">' +
                      '<a href="#" class="moreBtn" onclick="return popupTracks(event, \'' + uri + '\', \'' + resultArr[i].uri + '\', \'' + index + '\');">' +
                      '<i class="fa fa-ellipsis-v"></i></a>' +
-                     '<a href="#" class="browsetrack" onclick="return playBrowsedTracks(PLAY_ALL, ' + index + ');" id="' + resultArr[i].uri +
+                     '<a href="#" class="browsetrack" onclick="return playBrowsedTracks(ADD_THIS_BOTTOM, ' + index + ');" id="' + resultArr[i].uri +
                      '"><h1 class="trackname"><i class="' + iconClass + '"></i> ' + resultArr[i].name + '</h1></a></li>';
             index++
         } else {
@@ -241,7 +241,7 @@ function processAlbumResults(resultArr) {
         return;
     }
     customTracklists[resultArr.uri] = resultArr;
-    
+
     albumTracksToTable(resultArr, ALBUM_TABLE, resultArr.uri);
     var albumname = getAlbum(resultArr);
     var artistname = getArtist(resultArr);

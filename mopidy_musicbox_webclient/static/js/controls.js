@@ -1,3 +1,11 @@
+function startPlayingIfNotAlready() {
+    mopidy.playback.getState().done(function(state) {
+        if (state != 'playing') {
+            mopidy.playback.play().done();
+        }
+    });
+}
+
 /***********************************
  * play tracks from a browse list  *
  ***********************************/
@@ -34,8 +42,11 @@ function playBrowsedTracks(action, trackIndex) {
             var playIndex = (action === PLAY_ALL) ? trackIndex : 0;
             mopidy.playback.play({'tl_track': tlTracks[playIndex]});
         }
+        else {
+            startPlayingIfNotAlready();
+        }
     };
-        
+
     switch (action) {
         case PLAY_NOW:
         case PLAY_NEXT:
@@ -113,13 +124,7 @@ function playTrack(action) {
 
 function addTrackByUri(track_uri) {
     toast('queueing...');
-    mopidy.tracklist.add({'uris': [track_uri]}).then(function(tlTracks) {
-        mopidy.playback.getState().done(function(state) {
-            if (state != 'playing') {
-                mopidy.playback.play().done();
-            }
-        });
-    });
+    mopidy.tracklist.add({'uris': [track_uri]}).then(startPlayingIfNotAlready);
 }
 
 /***
@@ -153,7 +158,7 @@ function playTrackByUri(track_uri, playlist_uri) {
     toast('Loading...');
 
     mopidy.tracklist.add({'uris': [playlist_uri]}).then(function(tlTracks) {
-        // Can fail for all sorts of reasons. If so, just add individually. 
+        // Can fail for all sorts of reasons. If so, just add individually.
         if (tlTracks.length == 0) {
             var trackUris = getTracksFromUri(playlist_uri, false);
             mopidy.tracklist.add({'uris': trackUris}).then(findAndPlayTrack);
@@ -452,7 +457,7 @@ function playStreamUri(uri) {
 }
 
 function getCurrentlyPlaying() {
-    $('#streamuriinput').val(songdata.track.uri); 
+    $('#streamuriinput').val(songdata.track.uri);
     var name = songdata.track.name;
     if (songdata.track.artists) {
         var artistStr = artistsToString(songdata.track.artists);
@@ -460,7 +465,7 @@ function getCurrentlyPlaying() {
             name = artistStr + ' - ' + name;
         }
     }
-    $('#streamnameinput').val(name); 
+    $('#streamnameinput').val(name);
     return true;
 }
 
@@ -504,7 +509,7 @@ function getPlaylistFull(uri) {
 }
 
 function getFavourites() {
-    return getPlaylistByName(STREAMS_PLAYLIST_NAME, 
+    return getPlaylistByName(STREAMS_PLAYLIST_NAME,
                              STREAMS_PLAYLIST_SCHEME,
                              true).then(function(playlist) {
         if (playlist) {
@@ -571,7 +576,7 @@ function showFavourites() {
             return;
         }
         var tmp = '';
-        
+
         $.cookie.json = true;
         if ($.cookie('streamUris')) {
             tmp = '<button class="btn" style="padding: 5px; width: 100%" type="button" onclick="return upgradeStreamUrisToFavourites();">Convert StreamUris</button>'
@@ -587,7 +592,7 @@ function showFavourites() {
             }
         }
         $('#streamuristable').html(tmp);
-    });    
+    });
 }
 
 // TODO: Remove this upgrade path in next major release.
