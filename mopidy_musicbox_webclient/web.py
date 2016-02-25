@@ -50,6 +50,7 @@ class IndexHandler(tornado.web.RequestHandler):
             'useWebsocketUrl': ws_url != '',
             'websocket_url': ws_url,
             'alarmclock': config.get('alarmclock', {}).get('enabled', False),
+            'cacher': config.get('cacher', {}).get('enabled', False),
         }
         self.__path = path
 

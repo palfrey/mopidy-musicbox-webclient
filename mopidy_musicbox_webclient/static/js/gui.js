@@ -369,6 +369,36 @@ function updateStatusOfAll() {
     mopidy.mixer.getMute().then(processMute, console.error);
 }
 
+function getSources() {
+    var target = "#sourceresulttable";
+    $.get( "../cacher").then(function( data ) {
+      var html = "<table data-role=\"table\" id=\"sources-table\" data-mode=\"reflow\">";
+      html += "<thead><tr>";
+      html += "<th>URL</th>";
+      html += "<th>Works</th>";
+      html += "<th>Last Check Time</th>";
+      html += "</tr></thead><tbody>";
+      data.forEach(function(source) {
+          html += "<tr>";
+          html += "<td>" + source["url"] + "</td>";
+          html += "<td><i class=\"fa " + (source["successful"] == 1 ? "fa-times":"fa-check") + "\" /></td>";
+          var when;
+          if (source["last_check_time"] == 0) {
+              when = "Never";
+          }
+          else {
+              var a = new Date(source["last_check_time"] * 1000);
+              when = jQuery.timeago(a);
+          }
+
+          html += "<td>" + when + "</td>";
+          html += "</tr>";
+      });
+      html += "</tbody></table>";
+      $(target).html(html);
+  });
+}
+
 function locationHashChanged() {
     var hash = document.location.hash.split('?');
     //remove #
@@ -423,6 +453,9 @@ function locationHashChanged() {
             if (uri != '') {
                 showAlbum(uri);
             }
+            break;
+        case 'sources':
+            getSources();
             break;
     }
 
