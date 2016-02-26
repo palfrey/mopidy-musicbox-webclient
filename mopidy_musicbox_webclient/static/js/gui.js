@@ -381,7 +381,7 @@ function getSources() {
       html += "</tr></thead><tbody>";
       data.forEach(function(source) {
           html += "<tr>";
-          html += "<td>" + source["url"] + "</td>";
+          html += "<td><a href=\"" + source["url"] + "\">" + source["url"] + "</a></td>";
           html += "<td><i class=\"fa " + (source["successful"] == 1 ? "fa-check":"fa-times") + "\" /></td>";
           var when;
           if (source["last_check_time"] == 0) {
