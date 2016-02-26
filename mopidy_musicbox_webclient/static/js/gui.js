@@ -377,11 +377,12 @@ function getSources() {
       html += "<th>URL</th>";
       html += "<th>Works</th>";
       html += "<th>Last Check Time</th>";
+      html += "<th>Delete</th>";
       html += "</tr></thead><tbody>";
       data.forEach(function(source) {
           html += "<tr>";
           html += "<td>" + source["url"] + "</td>";
-          html += "<td><i class=\"fa " + (source["successful"] == 1 ? "fa-times":"fa-check") + "\" /></td>";
+          html += "<td><i class=\"fa " + (source["successful"] == 1 ? "fa-check":"fa-times") + "\" /></td>";
           var when;
           if (source["last_check_time"] == 0) {
               when = "Never";
@@ -392,10 +393,18 @@ function getSources() {
           }
 
           html += "<td>" + when + "</td>";
+          html += "<td><input type=\"button\" class=\"delete-button\" data-url=\"" + source["url"] + "\" value=\"Delete " + source["url"] + "\" /></td>";
           html += "</tr>";
       });
       html += "</tbody></table>";
       $(target).html(html);
+      $('.delete-button').click(function(data) {
+          var url = $(data.target).data("url");
+          $.ajax({
+              url: "../cacher/" + url,
+              type: 'DELETE',
+          }).then(getSources)
+      });
   });
 }
 
@@ -456,6 +465,18 @@ function locationHashChanged() {
             break;
         case 'sources':
             getSources();
+            $('#newSourceButton').click(function() {
+                var value = $('#newSourceURL')[0].value;
+                $.post("../cacher/", {url: value}, null, 'text')
+                    .then(function() {
+                        getSources();
+                        $('#sourceURLBad').hide();
+                    },
+                    function(data) {
+                        $('#sourceURLBad').show();
+                        console.log(data);
+                    });
+            });
             break;
     }
 
