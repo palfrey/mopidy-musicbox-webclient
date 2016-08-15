@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="/vendors/jquery/jquery-1.12.0.min.js"></script>
+        <script src="/vendors/jquery_mobile/jquery.mobile-1.3.2.min.js"></script>
+        <link rel="stylesheet" href="/vendors/font_awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="/vendors/jquery_mobile_flat_ui_theme/jquery.mobile.flatui.min.css"/>
+    </head>
+    <body>
+        <div data-role="page">
+            <div role="main" class="ui-content">
+                <div id="playlist" />
+            </div>
+        </div>
+        <script language="javascript">
+        function artists (artistList) {
+            var names = [];
+            artistList.forEach(function(artist) { names.push(artist["name"]);});
+            return names.join(", ");
+        };
+
+        function queryPlaylist() {
+            xhr = new XMLHttpRequest();
+            var url = "http://localhost/mopidy/rpc";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var json = JSON.parse(xhr.responseText);
+                    var text = "<h1>";
+                    if (json["result"].length == 0) {
+                        text += "No tracks in queue";
+                    }
+                    else {
+                        tr = json["result"][0]["track"];
+                        text += "<p>Current: " + artists(tr["artists"]) + " - " + tr["album"]["name"] + " - " + tr["name"] + "</p>";
+                        text += "<ol data-role=\"listview\">";
+                        json["result"].shift();
+                        json["result"].forEach(function(track) {
+                            var tr = track["track"];
+                            text += "<li>" + artists(tr["artists"]) + " - " + tr["album"]["name"] + " - " + tr["name"] + "</li>";
+                        });
+                        text += "</ol>";
+                    }
+                    text += "</h1>";
+                    document.getElementById("playlist").innerHTML = text;
+                }
+            }
+            var data = JSON.stringify({"jsonrpc": "2.0", "id": 1, "method": "core.tracklist.get_tl_tracks"});
+            xhr.send(data);
+            setTimeout(queryPlaylist, 5000);
+        }
+        queryPlaylist();
+        </script>
+    </body>
+</html>
