@@ -21,7 +21,7 @@
 
         function queryPlaylist() {
             xhr = new XMLHttpRequest();
-            var url = "http://localhost/mopidy/rpc";
+            var url = "/mopidy/rpc";
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-type", "application/json");
             xhr.onreadystatechange = function () {
