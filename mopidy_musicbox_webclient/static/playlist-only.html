@@ -19,6 +19,15 @@
             return names.join(", ");
         };
 
+        function album(tr) {
+            if ("album" in tr) {
+                return tr["album"]["name"];
+            }
+            else {
+                return "";
+            }
+        }
+
         function queryPlaylist() {
             xhr = new XMLHttpRequest();
             var url = "/mopidy/rpc";
@@ -33,12 +42,12 @@
                     }
                     else {
                         tr = json["result"][0]["track"];
-                        text += "<p>Current: " + artists(tr["artists"]) + " - " + tr["album"]["name"] + " - " + tr["name"] + "</p>";
+                        text += "<p>" + artists(tr["artists"]) + " - " + album(tr) + " - " + tr["name"] + "</p>";
                         text += "<ol data-role=\"listview\">";
                         json["result"].shift();
                         json["result"].forEach(function(track) {
                             var tr = track["track"];
-                            text += "<li>" + artists(tr["artists"]) + " - " + tr["album"]["name"] + " - " + tr["name"] + "</li>";
+                            text += "<li>" + artists(tr["artists"]) + " - " + album(tr) + " - " + tr["name"] + "</li>";
                         });
                         text += "</ol>";
                     }
