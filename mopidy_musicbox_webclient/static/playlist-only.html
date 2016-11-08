@@ -14,9 +14,14 @@
         </div>
         <script language="javascript">
         function artists (artistList) {
-            var names = [];
-            artistList.forEach(function(artist) { names.push(artist["name"]);});
-            return names.join(", ");
+            if ("artists" in tr) {
+                var names = [];
+                artistList.forEach(function(artist) { names.push(artist["name"]);});
+                return names.join(", ");
+            }
+            else {
+                return "";
+            }
         };
 
         function album(tr) {
@@ -42,12 +47,12 @@
                     }
                     else {
                         tr = json["result"][0]["track"];
-                        text += "<p>" + artists(tr["artists"]) + " - " + album(tr) + " - " + tr["name"] + "</p>";
+                        text += "<p>" + artists(tr) + " - " + album(tr) + " - " + tr["name"] + "</p>";
                         text += "<ol data-role=\"listview\">";
                         json["result"].shift();
                         json["result"].forEach(function(track) {
                             var tr = track["track"];
-                            text += "<li>" + artists(tr["artists"]) + " - " + album(tr) + " - " + tr["name"] + "</li>";
+                            text += "<li>" + artists(tr) + " - " + album(tr) + " - " + tr["name"] + "</li>";
                         });
                         text += "</ol>";
                     }
