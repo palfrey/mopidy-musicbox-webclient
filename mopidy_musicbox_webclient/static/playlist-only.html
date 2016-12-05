@@ -13,10 +13,10 @@
             </div>
         </div>
         <script language="javascript">
-        function artists (artistList) {
+        function artists (tr) {
             if ("artists" in tr) {
                 var names = [];
-                artistList.forEach(function(artist) { names.push(artist["name"]);});
+                tr["artists"].forEach(function(artist) { names.push(artist["name"]);});
                 return names.join(", ");
             }
             else {
